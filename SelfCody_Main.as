@@ -76,21 +76,24 @@
 		public var step3Loading:Loading;
 		private var blackBg:BlackBG;
 
+
+		/* SearchBar click events : SetCategory /selectList(), collectionClick() */
+		/* Thumb_Self : 엘레강스/모던/클래식 선택 박스 */
+		/* ProductList : Thumbnails list */
 		public function SelfCody_Main() {
 			siteURL = LoaderInfo(this.root.loaderInfo).parameters.siteURL;
 			fileURL = LoaderInfo(this.root.loaderInfo).parameters.FileURL;
 			
-			/*siteURL = "http://dev2.allm.co.kr:1344";
-			fileURL = "http://file.didwallpaper.com";*/
-
+			fileURL = "http://file.didwallpaper.com";
+			siteURL = "http://www.didwallpaper.com";	
 			xmlURL = siteURL+ "/lib/xml/category.asp";
-			productXML_URL = siteURL+"/lib/xml/product_list.asp";
+			//productXML_URL = siteURL+"/lib/xml/product_list.asp";
 			
 			stageW = stage.stageWidth;
 			stageH = 606;
 			
 			sp.alpha = 0;
-			addChild(sp);
+			addChild(sp);			
 		}
 		public function select(selectSt:Number) {
 			++selectCount;
@@ -147,8 +150,7 @@
 			}
 		}
 		private function step3Action() {
-			makeList();
-			step3Display();
+			makeList();			
 			setLoading();			
 			//trace("step3Action=",System.totalMemory);
 		}
@@ -193,7 +195,7 @@
 			searchBar.yHome = searchBar.y;
 			searchBar.btn.buttonMode = true;
 			searchBar.btn.addEventListener(MouseEvent.CLICK, mouseEvent);
-			
+			//SelfMC -> SelfCody -> WallPainting()
 			self = new SelfMC(this);
 			self.x = -50;
 			self.y = 560;
@@ -217,6 +219,7 @@
 			
 			self.self_selectStep1Main(step1Select);
 		}
+		//step3Action() -> makeList() -> ProductList -> Main.setWallInfo() -> selectMCInfo()
 		public function makeList() {
 			productList = new ProductList(this,
 										  						 siteURL,
@@ -244,15 +247,19 @@
 												 temp.strECollection,
 												 temp.orgURL,
 												 temp.thumbURL,
-												 "self");	
-			selectBoxLine(temp)
+												 "self");
+			selectBoxLine(temp);
+			if(!currentMC){
+				step3Display();
+			}
 			selectMCInfo();
 		}
-		public function selectWall(selectNum:Number) {
+		//slefCody/ProductList.as 에서 Thumbnail 클릭했을 때
+		public function selectWall(selectNum:Number) {			
 			loadingFn();
-			self.img.removePattern();
-			setWallInfo(selectNum);		
-			self.setImage(self.select);		
+			self.img.removePattern();			
+			setWallInfo(selectNum);				
+			self.setImage(self.select);					
 			wallDisplay(self.img);
 			this.progress_var = false;
 		}

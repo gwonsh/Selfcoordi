@@ -18,6 +18,7 @@
 
 	public class product_Main extends MovieClip {
 
+		// 새제품 추가는 dis_as/CollectCheck.as 부터
 		private var photo:PhotoMC;
 		private var self:SelfMC;
 		private var prom:PromotionMC;
@@ -70,9 +71,10 @@
 			fileURL =  LoaderInfo(this.root.loaderInfo).parameters.FileURL;
 			Security.allowDomain(siteURL);
 
-			/*siteURL = "http://dev2.allm.co.kr:1344";
-			xmlURL = "/lib/xml/product.asp?oidProduct=722";
-			fileURL = "";*/
+			
+/*			fileURL = "http://file.didwallpaper.com";
+			siteURL = "http://www.didwallpaper.com";	
+			xmlURL = "/lib/xml/product.asp?oidProduct=5286";*/			
 
 			stageW = stage.stageWidth;
 			stageH = stage.stageHeight;
@@ -119,7 +121,7 @@
 			xml = XML(xloader.data);
 			dataInfo = new DataInfo(this);
 			dataInfo.getDataInfo(xml.@strModel,
-			 xml.@strProductName,
+			xml.@strProductName,
 			xml.@oidProduct,
 			xml.@wallpapergubun,
 			xml.@strECollection,
@@ -142,7 +144,7 @@
 			frotingBar.getDataInfo(dataInfo);
 
 			photo.x = 10;
-			self.x = photo.x +photo.board.width + 5;
+			self.x = photo.x +photo.board.width + 5;						
 			prom.x = self.x + self.board.width + 5;
 			selectBoxW = photo.board.width+self.board.width+prom.board.width+5*3+10;
 			warn.x = selectBoxW - 10;
@@ -176,7 +178,7 @@
 			addChild(frotingBar);
 			addChild(blackBg);
 			addChild(loading);
-			selectBoxBtnAction();
+			selectBoxBtnAction();			
 		}
 		private function selectBoxBtnAction() {
 			selectNaviArray = [photo,self,prom];
@@ -190,7 +192,14 @@
 		}
 		private function upComplete() {
 			Tweener.addTween(photo, {y:0,delay:1,time:_SPEED, transition:_TRANS});
-			Tweener.addTween(prom, {y:0,delay:1, time:_SPEED, transition:_TRANS});
+			Tweener.addTween(prom, {y:0,delay:1, time:_SPEED, transition:_TRANS, onComplete:promComplete});
+		}
+		private function promComplete(){
+			//더 페어 일경우에만 베스트매치를 바로 보여줌
+			if(xml.@strECollection == "THE PAIR"){
+				prom.btn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				prom.onClick(prom.promArray[0]);
+			}
 		}
 		private function mouseEvent(e:MouseEvent) {
 			var mc:MovieClip = MovieClip(e.target.parent);

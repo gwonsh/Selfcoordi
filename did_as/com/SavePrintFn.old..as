@@ -36,6 +36,7 @@
 			dataInfo = getDataInfo
 			model = dataInfo.strModel;
 			selectRoomType = dataInfo.selectRoomType;
+			
 			targetW = tw;
 			targetH = th;
 			
@@ -44,10 +45,15 @@
 			}else if(getDataInfo.pageType == "self"){
 				pageType ="_cody";
 			}
-		
+
+			btn.buttonMode = true;
+			if(!btn.hasEventListener(MouseEvent.CLICK)){
+				btn.addEventListener(MouseEvent.CLICK,onClick);
+			}
 		}
-		public function onClick(e:MouseEvent) {				
+		private function onClick(e:MouseEvent) {
 			Main.loadingFn("save");
+			trace("savesavesavesavesavesavesavesavesavesavesavesave");
 			setTimeout(makeBmp, 100)
 
 		}
@@ -65,7 +71,7 @@
 				bmpReSize(target, 0, targetH)*/
 			} else {
 				waterMark.x = target.width - 15;
-				waterMark.y = target.height-15;				
+				waterMark.y = target.height-15;
 				target.addChild(waterMark);
 				jpgMake(target);
 			}
@@ -190,7 +196,9 @@
 			var fileName:String = escapeMultiByte(model+selectRoomType+pageType+".jpg");
 			var url:String = fileURL + "/selfcodi/image_view.php?name="+ fileName +"&type="+type + "&widthNum=" + W + "&heightNum=" + H ;
 			var request:URLRequest = new URLRequest(url);
-			navigateToURL(request,"_blank");				
+			//navigateToURL(request,"_blank");	
+			trace(model+selectRoomType+pageType);
+			trace("openend");
 		}
 	}
 }

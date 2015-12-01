@@ -50,7 +50,7 @@
 			num = target.num;
 			stageW = Main.stageW;
 			stageH = Main.stageH;
-			maskMC.gotoAndStop(num+1);
+			maskMC.gotoAndStop(num+1);			
 			var imgURL:String;
 			if (room == "") {
 				imgURL = targetMC.orgurl
@@ -90,7 +90,7 @@
 		private function wallPaint() {
 			if(selectName != "patternMatch"){
 				Main.Main.dataInfo.selectRoomType = selectName;
-			}
+			}			
 			var wallPainting:WallPainting = new WallPainting(this, patternURL, selectName, wallgubun,matchURL);
 		}
 		public function loadComplete(target:MovieClip) {

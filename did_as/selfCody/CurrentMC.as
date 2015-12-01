@@ -30,9 +30,11 @@
 			img = getIMG;
 			waterMark = mark;
 		}
-		public function setInfo(mc:MovieClip) {
+		
+		private var saveBtn:SavePrintFn;
+		private var printBtn:SavePrintFn;
+		public function setInfo(mc:MovieClip) {			
 			dataInfo = mc;
-			
 			imgURL = new URLRequest(dataInfo.thumbURL);
 			thumb_img = new Loader();
 			thumb_img.load(imgURL);
@@ -41,16 +43,29 @@
 			txtName.text = dataInfo.strProductName;
 			txtID.text = dataInfo.strModel;
 			logoSt = dataInfo.strECollection;
-			
 			textSet.setText(txtName, 0xFFFFFF,16,-0.3, "korFont");
 			textSet.setText(txtID, 0xa7a7a7,10.5,0,"engFont");
 			logo.gotoAndStop(getLogoNum());
 			btns.buttonMode = true;
 			
-			var saveBtn:SavePrintFn = new SavePrintFn(Main,btns.imgSave,"save",img,fileURL,dataInfo,waterMark);
-			var printBtn:SavePrintFn = new SavePrintFn(Main,btns.imgPrint,"print",img,fileURL,dataInfo,waterMark);			
+			saveBtn = new SavePrintFn(Main,btns.imgSave,"save",img,fileURL,dataInfo,waterMark);
+			btns.imgSave.buttonMode = true;
+			btns.imgSave.removeEventListener(MouseEvent.CLICK, saveBtnClick);
+			btns.imgSave.addEventListener(MouseEvent.CLICK, saveBtnClick);
+			printBtn = new SavePrintFn(Main,btns.imgPrint,"print",img,fileURL,dataInfo,waterMark);			
+			btns.imgPrint.removeEventListener(MouseEvent.CLICK, printBtnClick);
+			btns.imgPrint.addEventListener(MouseEvent.CLICK, printBtnClick);	
 			btns.screpBtn.addEventListener(MouseEvent.CLICK, screpFn);
 		}
+		
+		private function saveBtnClick(e:MouseEvent){
+			saveBtn.onClick(e);
+		}
+		
+		private function printBtnClick(e:MouseEvent){
+			printBtn.onClick(e);
+		}
+		
 		private function getLogoNum() {
 			var collect:CollectCheck = new CollectCheck();
 			return collect.returnCollectNum(logoSt);

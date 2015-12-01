@@ -162,18 +162,18 @@
 				sp.addChild(thumb);
 			}
 		}
-		public function setImage(target:MovieClip) {
+		public function setImage(target:MovieClip) {			
 			if(Main.loadingFn() != null){
 				Main.loadingFn();
 			}
 			var selfCody:SelfCody = new SelfCody(this,target,Main.dataInfo.wallpapergubun,Main.dataInfo.patternURL);
-			selfCody.addEventListener("selfCodyEnd", selfCodyEnd);
+			selfCody.addEventListener("selfCodyEnd", selfCodyEnd);			
 			img = selfCody;
 		}
 		private function selfCodyEnd(e:Event) {
 			imgReSizie();
 		}
-		public function getImages(target:MovieClip) {
+		public function getImages(target:MovieClip) {	
 			step2Out();
 			select = target;
 			setImage(select);
@@ -182,14 +182,14 @@
 		private function beginInterval(){
 			if(interval>0){
 				clearInterval(interval);
-			}
+			}			
 			interval = setInterval(displayImg, 100);
 		}
-		private function displayImg(){			
+		private function displayImg(){	
 			if(img.width != 0 && img.height != 0){
 				clearInterval(interval);
 				img.removePattern();
-				imgReSizie();
+				imgReSizie();				
 				Main.displayImg(img);
 			}else{
 				return;
