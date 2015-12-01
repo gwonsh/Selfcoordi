@@ -46,7 +46,6 @@
 			textSet.setText(target.txtName, 0xFFFFFF,15,-0.3, "korFont");
 			textSet.setText(target.txtID, 0xa7a7a7,10,0,"engFont");
 			target.logo.gotoAndStop(getLogoNum());
-			trace("Log num", logoSt, getLogoNum());
 			imgBox = target
 		}
 		

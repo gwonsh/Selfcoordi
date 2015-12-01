@@ -64,7 +64,6 @@
 				}
 				totalW = collection.txt.width + totalW + 30;
 				Main.searchBar.addChild(collection);*/
-				//if(!Main.searchBar["collection"+i]) return;
 				var collection:MovieClip = Main.searchBar["collection"+i];
 				collection.alpha=0.5;
 				collection.code = collectionSelect(temp_xml,i);				

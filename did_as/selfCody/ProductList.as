@@ -49,7 +49,8 @@
 			   +"&SearchCategory4="+sc4
 			   +"&SearchCategory5="+sc5
 			   +"&nPageNo="+nPageNo;
-			loader.load(new URLRequest(productXML_URL), "euc-kr");;
+
+			loader.load(new URLRequest(productXML_URL), "euc-kr");
 			loader.addEventListener(Event.COMPLETE, onComplete);
 		}
 		private function onComplete(e:Event) {
@@ -71,11 +72,13 @@
 				var ThumbURL:String = temp.thumbfileloc;
 				var orgURL:String = temp.fileloc;
 				var collection:String = temp.@strECollection;
+
 				thumb = new Thumb_Product(oid,strName,model,gubun,ThumbURL,orgURL,collection);
 				thumb.x = i*65;
 				thumb.num = i;
 				selectBoxLineCheck(thumb);
 				thumbArray.push(thumb);
+				thumb.alpha = 0;
 				Tweener.addTween(thumb, {alpha:1, delay:thumb.num/10 ,time:_SPEED, transition:_TRANS});
 				thumb.thumb.buttonMode = true;
 				thumb.thumb.addEventListener(MouseEvent.CLICK,mouseEvent);

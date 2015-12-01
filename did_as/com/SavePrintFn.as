@@ -5,6 +5,7 @@
 	import flash.net.*;
 	import flash.utils.*;
 	import flash.external.ExternalInterface;
+	import com.capture.UploadPostHelper;
 	import com.adobe.images.JPGEncoder;
 	import nid.image.encoder.JPEGEncoder;
 	import nid.image.encoder.PNGEncoder;
@@ -36,6 +37,7 @@
 			dataInfo = getDataInfo
 			model = dataInfo.strModel;
 			selectRoomType = dataInfo.selectRoomType;
+			
 			targetW = tw;
 			targetH = th;
 			
@@ -44,9 +46,11 @@
 			}else if(getDataInfo.pageType == "self"){
 				pageType ="_cody";
 			}
-		
+
+			btn.buttonMode = true;
+			btn.addEventListener(MouseEvent.CLICK,onClick);
 		}
-		public function onClick(e:MouseEvent) {				
+		private function onClick(e:MouseEvent) {
 			Main.loadingFn("save");
 			setTimeout(makeBmp, 100)
 
@@ -65,7 +69,7 @@
 				bmpReSize(target, 0, targetH)*/
 			} else {
 				waterMark.x = target.width - 15;
-				waterMark.y = target.height-15;				
+				waterMark.y = target.height-15;
 				target.addChild(waterMark);
 				jpgMake(target);
 			}
@@ -127,10 +131,9 @@
 			
 //			var jpgEncoder:JPGEncoder = new JPGEncoder(this,80);
 //			var jpgStream:ByteArray = jpgEncoder.encode(jpgSource);
-			
+
 			var header:URLRequestHeader = new URLRequestHeader("Content-type", "application/octet-stream");
-			var jpgURLRequest:URLRequest = new URLRequest(fileURL+"/selfcodi/image_save.php?name="+model+selectRoomType+pageType+".jpg"+"&type="+type+"&widthNum="+Math.ceil(target.width)+"&heightNum="+Math.ceil(target.height));			
-			trace(fileURL+"/selfcodi/image_save.php?name="+model+selectRoomType+pageType+".jpg"+"&type="+type+"&widthNum="+Math.ceil(target.width)+"&heightNum="+Math.ceil(target.height));
+			var jpgURLRequest:URLRequest = new URLRequest(fileURL+"/selfcodi/image_save.php?name="+model+selectRoomType+pageType+".jpg"+"&type="+type+"&widthNum="+Math.ceil(target.width)+"&heightNum="+Math.ceil(target.height));
 			jpgURLRequest.requestHeaders.push(header);
 			jpgURLRequest.method = URLRequestMethod.POST;
 			jpgURLRequest.data = byteArray;
@@ -190,7 +193,7 @@
 			var fileName:String = escapeMultiByte(model+selectRoomType+pageType+".jpg");
 			var url:String = fileURL + "/selfcodi/image_view.php?name="+ fileName +"&type="+type + "&widthNum=" + W + "&heightNum=" + H ;
 			var request:URLRequest = new URLRequest(url);
-			navigateToURL(request,"_blank");				
+			navigateToURL(request,"_blank");	
 		}
 	}
 }

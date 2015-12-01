@@ -51,7 +51,7 @@
 			wallgubun = gubun;
 			stageW = Main.stageW;
 			stageH = Main.stageH;
-			matchURL = matchPatternURL;	
+			matchURL = matchPatternURL;
 			sizeInfo();
 		}
 		private function sizeInfo() {

@@ -17,7 +17,7 @@
 		public var ty:Number=-85;// 클릭시 y축 범위
 		public var select:MovieClip;
 		
-		public var promArray:Array=new Array;// 썸네일 배열
+		private var promArray:Array=new Array;// 썸네일 배열
 		private var dataInfoArray:Array=new Array;
 		
 		private var sp:Sprite=new Sprite;// 썸네일 박스
