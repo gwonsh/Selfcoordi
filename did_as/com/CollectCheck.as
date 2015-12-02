@@ -2,7 +2,7 @@
 
 	public class CollectCheck  {
 		
-		private var arr:Array = ["SIDUS POINT","SIDUS VELVET","D&D","4U","EPISODE","ECO","COLORS"]
+		private var arr:Array = ["THE PAIR", "The One","D&D","4U","COLORS","SIDUS VELVET","EPISODE","ECO"]
 		
 		public function CollectCheck(){
 			
@@ -23,6 +23,9 @@
 				num=6;
 			}else if (logoSt == arr[6]) {
 				num=7;
+			}
+			else if (logoSt == arr[7]) {
+				num=8;
 			}
 			return num;
 		}

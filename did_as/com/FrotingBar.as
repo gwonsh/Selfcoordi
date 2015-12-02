@@ -52,13 +52,27 @@
 			alpha = 0.8
 			ColorShortcuts.init();
 		}
+		private var saveBtn:SavePrintFn;
+		private var printBtn:SavePrintFn;
 		public function getDataInfo(dataInfo:MovieClip) {
-			addEventListener(Event.ADDED_TO_STAGE,initHeander);			
-			var saveBtn:SavePrintFn = new SavePrintFn(Main,bg.saveBtn,"save",img, fileURL, dataInfo,waterMark);
-			var printBtn:SavePrintFn = new SavePrintFn(Main,bg.printBtn,"print",img, fileURL, dataInfo,waterMark);
-			
+			addEventListener(Event.ADDED_TO_STAGE,initHeander);				
+			saveBtn = new SavePrintFn(Main,bg.saveBtn,"save",img, fileURL, dataInfo,waterMark);
+			bg.saveBtn.removeEventListener(MouseEvent.CLICK, saveBtnClick);
+			bg.saveBtn.addEventListener(MouseEvent.CLICK, saveBtnClick);			
+			printBtn = new SavePrintFn(Main,bg.printBtn,"print",img, fileURL, dataInfo,waterMark);
+			bg.printBtn.removeEventListener(MouseEvent.CLICK, printBtnClick);
+			bg.printBtn.addEventListener(MouseEvent.CLICK, printBtnClick);				
 			setDataInfo(info,dataInfo);
 		}
+		
+		private function saveBtnClick(e:MouseEvent){
+			saveBtn.onClick(e);
+		}
+		
+		private function printBtnClick(e:MouseEvent){
+			printBtn.onClick(e);
+		}
+		
 		private function initHeander(e:Event) {
 			init();
 		}
@@ -75,7 +89,6 @@
 			target.oidProduct = dataInfo.oidProduct;
 			target.thumbURL = dataInfo.thumbURL;
 			target.strECollection = dataInfo.strECollection;
-			
 			target.pName.text=target.strProductName;
 			target.modelText.text=target.strModel;
 			textSet.setText(target.pName, 0x333333, 10, 0, "korFont");
@@ -99,6 +112,7 @@
 			loder.height = 22
 		}
 		private function setCollection(logoSt:String) {
+			trace(logoSt, "logo");
 			var collect:CollectCheck = new CollectCheck();
 			return collect.returnCollectNum(logoSt);
 		}

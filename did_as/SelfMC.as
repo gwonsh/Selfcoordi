@@ -76,19 +76,28 @@
 			}
 			removeEventListener("step1MoveComplete", self_selectSetp2Main);
 		}
-		public function selectMain() {
-			var rand = Math.floor(Math.random()*5);
-			step1RandNum = rand;
-			step1ClickFn(selfArray_step1[rand]);
-			step1Over(selfArray_step1[rand]);
+		//최초 실행시 장소 랜덤 선택
+		private var firstStyle:int;
+		public function selectMain(place:int = -1, style:int = -1) {
+			firstStyle = style;
+			//최초 받아온 값이 없을 때는 랜덤으로
+			if(place == -1){
+				place = Math.floor(Math.random()*5);
+			}
+			step1RandNum = place;
+			step1ClickFn(selfArray_step1[place]);
+			step1Over(selfArray_step1[place]);
 			addEventListener("step1MoveComplete", selectSetp2Main);
 		}
+		//최초 실행시 스타일 랜덤 선택
 		private function selectSetp2Main(e:Event) {
-			var rand = Math.floor(Math.random()*2);
-			if (step1RandNum == 5) {
-				rand = Math.floor(Math.random()*1);
+			if(firstStyle == -1){
+				firstStyle = Math.floor(Math.random()*2);
+				if (step1RandNum == 5) {
+					firstStyle = Math.floor(Math.random()*1);
+				}
 			}
-			var go:Number = step1RandNum *3 + rand;
+			var go:Number = step1RandNum *3 + firstStyle;
 			selfArray_step2[go].over();
 			selfArray_step2[go].onClick();
 			removeEventListener("step1MoveComplete", selectSetp2Main);
@@ -109,6 +118,8 @@
 				selfArray_step1.push(this["space" + i]);
 			}
 		}
+		
+		//거실, 안방, 서재, 주방, 아동을 클릭 했을 경우
 		private function mouseEvent(e:MouseEvent) {
 			var mc:MovieClip = MovieClip(e.target.parent);
 			if (e.type == "rollOver") {
@@ -124,7 +135,8 @@
 		}
 		private function step1Out(target:MovieClip) {
 			Tweener.addTween(target,{_color:0x4F4F4F,time:speed,transition :trans});
-		}
+		}		
+		//장소 클릭시
 		private function step1ClickFn(target:MovieClip) {
 			setSelectThumb();
 			select_step1 = target;
@@ -148,6 +160,7 @@
 		private function step1MoveComplete() {
 			dispatchEvent(new Event("step1MoveComplete"));
 		}
+		
 		private function step2MakeThumb() {
 			var total = 14;
 			for (var i:uint = 0; i<total; i++) {
@@ -157,39 +170,41 @@
 				var nameSt:String = step1Name[Math.floor(i/3)]+"_"+step2Name[(i%3)];
 				var xPos:Number =  i*102;
 
+				//엘레강스, 모던, 클래식등 아이콘 주가
 				thumb = new Thumb_Self(this,url,orgURL,textNum,nameSt,xPos,i);
 				selfArray_step2.push(thumb);
 				sp.addChild(thumb);
 			}
 		}
-		public function setImage(target:MovieClip) {
+		public function setImage(target:MovieClip) {			
 			if(Main.loadingFn() != null){
 				Main.loadingFn();
 			}
 			var selfCody:SelfCody = new SelfCody(this,target,Main.dataInfo.wallpapergubun,Main.dataInfo.patternURL);
-			selfCody.addEventListener("selfCodyEnd", selfCodyEnd);
+			selfCody.addEventListener("selfCodyEnd", selfCodyEnd);			
 			img = selfCody;
 		}
 		private function selfCodyEnd(e:Event) {
 			imgReSizie();
 		}
-		public function getImages(target:MovieClip) {
+		//엘레강스, 모던, 클래식을 클릭했을 때
+		public function getImages(target:MovieClip) {	
 			step2Out();
-			select = target;
+			select = target;			
 			setImage(select);
 			beginInterval();
 		}
 		private function beginInterval(){
 			if(interval>0){
 				clearInterval(interval);
-			}
+			}			
 			interval = setInterval(displayImg, 100);
 		}
-		private function displayImg(){			
+		private function displayImg(){	
 			if(img.width != 0 && img.height != 0){
 				clearInterval(interval);
 				img.removePattern();
-				imgReSizie();
+				imgReSizie();				
 				Main.displayImg(img);
 			}else{
 				return;

@@ -18,9 +18,10 @@
 
 	public class product_Main extends MovieClip {
 
-		private var photo:PhotoMC;
-		private var self:SelfMC;
-		private var prom:PromotionMC;
+		// 새제품 추가는 dis_as/CollectCheck.as 부터
+		private var photo:PhotoMC;//시공사례/2쪽보기/질감보기 MC
+		private var self:SelfMC; //장소 스타일 선택 MC
+		private var prom:PromotionMC;//베스트매치 MC
 		private var bg:BG;
 		public var warn:Warn;
 		public var frotingBar:FrotingBar;
@@ -40,6 +41,8 @@
 		public var siteURL:String;
 		public var xmlURL:String;
 		public var fileURL:String;
+		private var styleNum:int;
+		private var placeNum:int;
 
 		private var xml:XML = new XML();
 		private var xloader:XMLLoader = new XMLLoader();
@@ -68,11 +71,15 @@
 			siteURL = LoaderInfo(this.root.loaderInfo).parameters.siteURL;
 			xmlURL =  LoaderInfo(this.root.loaderInfo).parameters.xmlURL;
 			fileURL =  LoaderInfo(this.root.loaderInfo).parameters.FileURL;
-			Security.allowDomain(siteURL);
-
-			/*siteURL = "http://dev2.allm.co.kr:1344";
-			xmlURL = "/lib/xml/product.asp?oidProduct=722";
-			fileURL = "";*/
+			placeNum =  LoaderInfo(this.root.loaderInfo).parameters.placeNum;
+			styleNum =  LoaderInfo(this.root.loaderInfo).parameters.styleNum;
+			styleNum = 1;
+			if(!placeNum) placeNum = -1;
+			if(!styleNum) styleNum = -1;
+			
+			fileURL = "http://file.didwallpaper.com";
+			siteURL = "http://www.didwallpaper.com";	
+			xmlURL = "/lib/xml/product.asp?oidProduct=4399";			
 
 			stageW = stage.stageWidth;
 			stageH = stage.stageHeight;
@@ -119,7 +126,7 @@
 			xml = XML(xloader.data);
 			dataInfo = new DataInfo(this);
 			dataInfo.getDataInfo(xml.@strModel,
-			 xml.@strProductName,
+			xml.@strProductName,
 			xml.@oidProduct,
 			xml.@wallpapergubun,
 			xml.@strECollection,
@@ -142,7 +149,7 @@
 			frotingBar.getDataInfo(dataInfo);
 
 			photo.x = 10;
-			self.x = photo.x +photo.board.width + 5;
+			self.x = photo.x +photo.board.width + 5;						
 			prom.x = self.x + self.board.width + 5;
 			selectBoxW = photo.board.width+self.board.width+prom.board.width+5*3+10;
 			warn.x = selectBoxW - 10;
@@ -150,6 +157,7 @@
 			bg.width = stageW;
 
 			box.addChild(imgTemp);
+			//매칭이미지 추가
 			box.addChild(img);
 			box.addChild(decoBox);
 			addChild(box);
@@ -176,7 +184,7 @@
 			addChild(frotingBar);
 			addChild(blackBg);
 			addChild(loading);
-			selectBoxBtnAction();
+			selectBoxBtnAction();			
 		}
 		private function selectBoxBtnAction() {
 			selectNaviArray = [photo,self,prom];
@@ -184,13 +192,21 @@
 				selectNaviArray[i].btn.addEventListener(MouseEvent.CLICK, mouseEvent);
 			}
 			selectBoxY(selectNaviArray[1]);
-			selectNaviArray[1].selectMain();
+			//최초 실행 시의 장소와 스타일			
+			selectNaviArray[1].selectMain(placeNum, styleNum);
 			Tweener.addTween(photo, {y:photo.ty, time:_SPEED, transition:_TRANS, onComplete:upComplete});
 			Tweener.addTween(prom, {y:prom.ty, time:_SPEED, transition:_TRANS});
 		}
 		private function upComplete() {
 			Tweener.addTween(photo, {y:0,delay:1,time:_SPEED, transition:_TRANS});
-			Tweener.addTween(prom, {y:0,delay:1, time:_SPEED, transition:_TRANS});
+			Tweener.addTween(prom, {y:0,delay:1, time:_SPEED, transition:_TRANS, onComplete:promComplete});
+		}
+		private function promComplete(){
+			//더 페어 일경우에만 베스트매치를 바로 보여줌
+			if(xml.@strECollection == "THE PAIR"){
+				prom.btn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				prom.onClick(prom.promArray[0]);
+			}
 		}
 		private function mouseEvent(e:MouseEvent) {
 			var mc:MovieClip = MovieClip(e.target.parent);
